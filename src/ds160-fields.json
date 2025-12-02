@@ -1,0 +1,580 @@
+{
+  "fields": [
+    {
+      "id": "name-provided",
+      "label": "Name Provided:",
+      "type": "text",
+      "placeholder": "Enter your full name",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "name-alphabet",
+      "label": "Full Name in Native Alphabet:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "other-names",
+      "label": "Other Names Used:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "telecode-provided",
+      "label": "Telecode Name Used:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "sex",
+      "label": "Sex:",
+      "type": "select",
+      "placeholder": "female,male",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "masritalst",
+      "label": "Marital Status:",
+      "type": "select",
+      "placeholder": "single,married,widowed,divorced,domestic partnership",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "dob",
+      "label": "Date of Birth:",
+      "type": "text",
+      "placeholder": "MM/DD/YYYY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "countrybirth",
+      "label": "Country/Region of Birth:",
+      "type": "select",
+      "placeholder": "Afghanistan, Albania, Algeria, American Samoa, Andorra, Angola, Anguilla, Antarctica, Antigua and Barbuda, Argentina, Armenia, Aruba, Australia, Austria, Azerbaijan, Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bermuda, Bhutan, Bolivia, Bosnia and Herzegovina, Botswana, Bouvet Island, Brazil, British Indian Ocean Territory, Brunei Darussalam, Bulgaria, Burkina Faso, Burundi, Cambodia, Cameroon, Canada, Cape Verde, Cayman Islands, Central African Republic, Chad, Chile, China, Christmas Island, Cocos (Keeling Islands), Colombia, Comoros, Congo, Cook Islands, Costa Rica, Cote D'Ivoire (Ivory Coast), Croatia (Hrvatska, Cuba, Cyprus, Czech Republic, Denmark, Djibouti, Dominica, Dominican Republic, East Timor, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Ethiopia, Falkland Islands (Malvinas), Faroe Islands, Fiji, Finland, France, France, Metropolitan, French Guiana, French Polynesia, French Southern Territories, Gabon, Gambia, Georgia, Germany, Ghana, Gibraltar, Greece, Greenland, Grenada, Guadeloupe, Guam, Guatemala, Guinea, Guinea-Bissau, Guyana, Haiti, Heard and McDonald Islands, Honduras, Hong Kong, Hungary, Iceland, India, Indonesia, Iran, Iraq, Ireland, Israel, Italy, Jamaica, Japan, Jordan, Kazakhstan, Kenya, Kiribati, Korea (North), Korea (South), Kuwait, Kyrgyzstan, Laos, Latvia, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Lithuania, Luxembourg, Macau, Macedonia, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Marshall Islands, Martinique, Mauritania, Mauritius, Mayotte, Mexico, Micronesia, Moldova, Monaco, Mongolia, Montserrat, Morocco, Mozambique, Myanmar, Namibia, Nauru, Nepal, Netherlands, Netherlands Antilles, New Caledonia, New Zealand, Nicaragua, Niger, Nigeria, Niue, Norfolk Island, Northern Mariana Islands, Norway, Oman, Pakistan, Palau, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Pitcairn, Poland, Portugal, Puerto Rico, Qatar, Reunion, Romania, Russian Federation, Rwanda, Saint Kitts and Nevis, Saint Lucia, Saint Vincent and The Grenadines, Samoa, San Marino, Sao Tome and Principe, Saudi Arabia, Senegal, Seychelles, Sierra Leone, Singapore, Slovak Republic, Slovenia, Solomon Islands, Somalia, South Africa, S. Georgia and S. Sandwich Isls., Spain, Sri Lanka, St. Helena, St. Pierre and Miquelon, Sudan, Suriname, Svalbard and Jan Mayen Islands, Swaziland, Sweden, Switzerland, Syria, Taiwan, Tajikistan, Tanzania, Thailand, Togo, Tokelau, Tonga, Trinidad and Tobago, Tunisia, Turkey, Turkmenistan, Turks and Caicos Islands, Tuvalu, Uganda, Ukraine, United Arab Emirates, United Kingdom (Britain / UK), United States of America (USA), US Minor Outlying Islands, Uruguay, Uzbekistan, Vanuatu, Vatican City State (Holy See), Venezuela, Viet Nam, Virgin Islands (British), Virgin Islands (US), Wallis and Futuna Islands, Western Sahara, Yemen, Yugoslavia, Zaire, Zambia, Zimbabwe",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "natques",
+      "label": "Do you hold or have you held any nationality other than the one indicated above on nationality?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    },
+       {
+      "id": "permanent",
+      "label": "Are you a permanent resident of a country/region other than yourcountry/region of origin (nationality) above?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "nin",
+      "label": "National Identification Number:",
+      "type": "text",
+      "placeholder": "##############",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "ssn",
+      "label": "U.S. Social Security Number:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "tax",
+      "label": "U.S. Taxpayer ID Number:",
+      "type": "text",
+      "placeholder": "##########",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "home",
+      "label": "Home Address:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "city",
+      "label": "City:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "state",
+      "label": "State/province:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "postal",
+      "label": "Postal Zone/Zip Code:",
+      "type": "text",
+      "placeholder": "#####",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "country",
+      "label": "Country/Region:",
+      "type": "select",
+      "placeholder": "Afghanistan, Albania, Algeria, American Samoa, Andorra, Angola, Anguilla, Antarctica, Antigua and Barbuda, Argentina, Armenia, Aruba, Australia, Austria, Azerbaijan, Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bermuda, Bhutan, Bolivia, Bosnia and Herzegovina, Botswana, Bouvet Island, Brazil, British Indian Ocean Territory, Brunei Darussalam, Bulgaria, Burkina Faso, Burundi, Cambodia, Cameroon, Canada, Cape Verde, Cayman Islands, Central African Republic, Chad, Chile, China, Christmas Island, Cocos (Keeling Islands), Colombia, Comoros, Congo, Cook Islands, Costa Rica, Cote D'Ivoire (Ivory Coast), Croatia (Hrvatska, Cuba, Cyprus, Czech Republic, Denmark, Djibouti, Dominica, Dominican Republic, East Timor, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Ethiopia, Falkland Islands (Malvinas), Faroe Islands, Fiji, Finland, France, France, Metropolitan, French Guiana, French Polynesia, French Southern Territories, Gabon, Gambia, Georgia, Germany, Ghana, Gibraltar, Greece, Greenland, Grenada, Guadeloupe, Guam, Guatemala, Guinea, Guinea-Bissau, Guyana, Haiti, Heard and McDonald Islands, Honduras, Hong Kong, Hungary, Iceland, India, Indonesia, Iran, Iraq, Ireland, Israel, Italy, Jamaica, Japan, Jordan, Kazakhstan, Kenya, Kiribati, Korea (North), Korea (South), Kuwait, Kyrgyzstan, Laos, Latvia, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Lithuania, Luxembourg, Macau, Macedonia, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Marshall Islands, Martinique, Mauritania, Mauritius, Mayotte, Mexico, Micronesia, Moldova, Monaco, Mongolia, Montserrat, Morocco, Mozambique, Myanmar, Namibia, Nauru, Nepal, Netherlands, Netherlands Antilles, New Caledonia, New Zealand, Nicaragua, Niger, Nigeria, Niue, Norfolk Island, Northern Mariana Islands, Norway, Oman, Pakistan, Palau, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Pitcairn, Poland, Portugal, Puerto Rico, Qatar, Reunion, Romania, Russian Federation, Rwanda, Saint Kitts and Nevis, Saint Lucia, Saint Vincent and The Grenadines, Samoa, San Marino, Sao Tome and Principe, Saudi Arabia, Senegal, Seychelles, Sierra Leone, Singapore, Slovak Republic, Slovenia, Solomon Islands, Somalia, South Africa, S. Georgia and S. Sandwich Isls., Spain, Sri Lanka, St. Helena, St. Pierre and Miquelon, Sudan, Suriname, Svalbard and Jan Mayen Islands, Swaziland, Sweden, Switzerland, Syria, Taiwan, Tajikistan, Tanzania, Thailand, Togo, Tokelau, Tonga, Trinidad and Tobago, Tunisia, Turkey, Turkmenistan, Turks and Caicos Islands, Tuvalu, Uganda, Ukraine, United Arab Emirates, United Kingdom (Britain / UK), United States of America (USA), US Minor Outlying Islands, Uruguay, Uzbekistan, Vanuatu, Vatican City State (Holy See), Venezuela, Viet Nam, Virgin Islands (British), Virgin Islands (US), Wallis and Futuna Islands, Western Sahara, Yemen, Yugoslavia, Zaire, Zambia, Zimbabwe",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "smail",
+      "label": "Same Mailing Address?",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "phone1",
+      "label": "Primary Phone Number",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "phone2",
+      "label": "Secondary Phone Number",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "wphone",
+      "label": "Work Phone Number:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "extraphone",
+      "label": "Have you used additional phone numbers in the last five years?",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "emailaddress",
+      "label": "Email Address:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "extraemail",
+      "label": "Have you used additional email addresses in the last five years?",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "email1",
+      "label": "Email address (1):",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "smedia",
+      "label": "Do you have social media presence?",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "smedia1",
+      "label": "Social Media Provider/Platform (1):",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "smedia11",
+      "label": "Social Media Identifier (1):",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "smedia2",
+      "label": "Social Media Provider/Platform (2):",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "smedia22",
+      "label": "Social Media Identifier (2):",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "smedia3",
+      "label": "Social Media Provider/Platform (3):",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "smedia33",
+      "label": "Social Media Identifier (3):",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "smediaextra",
+      "label": "Have you used any additional social media platforms in the last five years?",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "ptype",
+      "label": "Passport/Travel Document Type:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "pnumber",
+      "label": "Passport/Travel Document Number:",
+      "type": "text",
+      "placeholder": "########",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "pbook",
+      "label": "Passport Book Number:",
+      "type": "text",
+      "placeholder": "#######",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "pcountry",
+      "label": "Country/Authority that Issued Passport/Travel Document:",
+      "type": "select",
+      "placeholder": "Afghanistan, Albania, Algeria, American Samoa, Andorra, Angola, Anguilla, Antarctica, Antigua and Barbuda, Argentina, Armenia, Aruba, Australia, Austria, Azerbaijan, Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bermuda, Bhutan, Bolivia, Bosnia and Herzegovina, Botswana, Bouvet Island, Brazil, British Indian Ocean Territory, Brunei Darussalam, Bulgaria, Burkina Faso, Burundi, Cambodia, Cameroon, Canada, Cape Verde, Cayman Islands, Central African Republic, Chad, Chile, China, Christmas Island, Cocos (Keeling Islands), Colombia, Comoros, Congo, Cook Islands, Costa Rica, Cote D'Ivoire (Ivory Coast), Croatia (Hrvatska, Cuba, Cyprus, Czech Republic, Denmark, Djibouti, Dominica, Dominican Republic, East Timor, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Ethiopia, Falkland Islands (Malvinas), Faroe Islands, Fiji, Finland, France, France, Metropolitan, French Guiana, French Polynesia, French Southern Territories, Gabon, Gambia, Georgia, Germany, Ghana, Gibraltar, Greece, Greenland, Grenada, Guadeloupe, Guam, Guatemala, Guinea, Guinea-Bissau, Guyana, Haiti, Heard and McDonald Islands, Honduras, Hong Kong, Hungary, Iceland, India, Indonesia, Iran, Iraq, Ireland, Israel, Italy, Jamaica, Japan, Jordan, Kazakhstan, Kenya, Kiribati, Korea (North), Korea (South), Kuwait, Kyrgyzstan, Laos, Latvia, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Lithuania, Luxembourg, Macau, Macedonia, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Marshall Islands, Martinique, Mauritania, Mauritius, Mayotte, Mexico, Micronesia, Moldova, Monaco, Mongolia, Montserrat, Morocco, Mozambique, Myanmar, Namibia, Nauru, Nepal, Netherlands, Netherlands Antilles, New Caledonia, New Zealand, Nicaragua, Niger, Nigeria, Niue, Norfolk Island, Northern Mariana Islands, Norway, Oman, Pakistan, Palau, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Pitcairn, Poland, Portugal, Puerto Rico, Qatar, Reunion, Romania, Russian Federation, Rwanda, Saint Kitts and Nevis, Saint Lucia, Saint Vincent and The Grenadines, Samoa, San Marino, Sao Tome and Principe, Saudi Arabia, Senegal, Seychelles, Sierra Leone, Singapore, Slovak Republic, Slovenia, Solomon Islands, Somalia, South Africa, S. Georgia and S. Sandwich Isls., Spain, Sri Lanka, St. Helena, St. Pierre and Miquelon, Sudan, Suriname, Svalbard and Jan Mayen Islands, Swaziland, Sweden, Switzerland, Syria, Taiwan, Tajikistan, Tanzania, Thailand, Togo, Tokelau, Tonga, Trinidad and Tobago, Tunisia, Turkey, Turkmenistan, Turks and Caicos Islands, Tuvalu, Uganda, Ukraine, United Arab Emirates, United Kingdom (Britain / UK), United States of America (USA), US Minor Outlying Islands, Uruguay, Uzbekistan, Vanuatu, Vatican City State (Holy See), Venezuela, Viet Nam, Virgin Islands (British), Virgin Islands (US), Wallis and Futuna Islands, Western Sahara, Yemen, Yugoslavia, Zaire, Zambia, ZimbabweY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "pcity",
+      "label": "City where issued:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "pcountryiss",
+      "label": "Country/Region where issued:",
+      "type": "select",
+      "placeholder": "Afghanistan, Albania, Algeria, American Samoa, Andorra, Angola, Anguilla, Antarctica, Antigua and Barbuda, Argentina, Armenia, Aruba, Australia, Austria, Azerbaijan, Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bermuda, Bhutan, Bolivia, Bosnia and Herzegovina, Botswana, Bouvet Island, Brazil, British Indian Ocean Territory, Brunei Darussalam, Bulgaria, Burkina Faso, Burundi, Cambodia, Cameroon, Canada, Cape Verde, Cayman Islands, Central African Republic, Chad, Chile, China, Christmas Island, Cocos (Keeling Islands), Colombia, Comoros, Congo, Cook Islands, Costa Rica, Cote D'Ivoire (Ivory Coast), Croatia (Hrvatska, Cuba, Cyprus, Czech Republic, Denmark, Djibouti, Dominica, Dominican Republic, East Timor, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Ethiopia, Falkland Islands (Malvinas), Faroe Islands, Fiji, Finland, France, France, Metropolitan, French Guiana, French Polynesia, French Southern Territories, Gabon, Gambia, Georgia, Germany, Ghana, Gibraltar, Greece, Greenland, Grenada, Guadeloupe, Guam, Guatemala, Guinea, Guinea-Bissau, Guyana, Haiti, Heard and McDonald Islands, Honduras, Hong Kong, Hungary, Iceland, India, Indonesia, Iran, Iraq, Ireland, Israel, Italy, Jamaica, Japan, Jordan, Kazakhstan, Kenya, Kiribati, Korea (North), Korea (South), Kuwait, Kyrgyzstan, Laos, Latvia, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Lithuania, Luxembourg, Macau, Macedonia, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Marshall Islands, Martinique, Mauritania, Mauritius, Mayotte, Mexico, Micronesia, Moldova, Monaco, Mongolia, Montserrat, Morocco, Mozambique, Myanmar, Namibia, Nauru, Nepal, Netherlands, Netherlands Antilles, New Caledonia, New Zealand, Nicaragua, Niger, Nigeria, Niue, Norfolk Island, Northern Mariana Islands, Norway, Oman, Pakistan, Palau, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Pitcairn, Poland, Portugal, Puerto Rico, Qatar, Reunion, Romania, Russian Federation, Rwanda, Saint Kitts and Nevis, Saint Lucia, Saint Vincent and The Grenadines, Samoa, San Marino, Sao Tome and Principe, Saudi Arabia, Senegal, Seychelles, Sierra Leone, Singapore, Slovak Republic, Slovenia, Solomon Islands, Somalia, South Africa, S. Georgia and S. Sandwich Isls., Spain, Sri Lanka, St. Helena, St. Pierre and Miquelon, Sudan, Suriname, Svalbard and Jan Mayen Islands, Swaziland, Sweden, Switzerland, Syria, Taiwan, Tajikistan, Tanzania, Thailand, Togo, Tokelau, Tonga, Trinidad and Tobago, Tunisia, Turkey, Turkmenistan, Turks and Caicos Islands, Tuvalu, Uganda, Ukraine, United Arab Emirates, United Kingdom (Britain / UK), United States of America (USA), US Minor Outlying Islands, Uruguay, Uzbekistan, Vanuatu, Vatican City State (Holy See), Venezuela, Viet Nam, Virgin Islands (British), Virgin Islands (US), Wallis and Futuna Islands, Western Sahara, Yemen, Yugoslavia, Zaire, Zambia, Zimbabwe",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "pdatei",
+      "label": "Issuance Date:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "pdateexp",
+      "label": "Expiration Date:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "pstolen",
+      "label": "Have you ever lost a passport or had one stolen?",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "trippur1",
+      "label": "Purpose of Trip to the U.S. (1):",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "tripspec",
+      "label": "Specify:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "tplans",
+      "label": "Have you made specific travel plans?",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "itinus",
+      "label": "Provide a complete itinerary for your travel to the U.S. \n Date of Arrival in U.S.:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "arrival",
+      "label": "Arrival City:",
+      "type": "text",
+      "placeholder": "MM/DD/YYYY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "departdate",
+      "label": "Date of Departure from U.S.",
+      "type": "text",
+      "placeholder": "MM/DD/YYYY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "departcity",
+      "label": "Departure City:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "locationus",
+      "label": "The Location(s) you plan to visit in the U.S. Location (1):",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "addressstay",
+      "label": "Address where you will stay in the U.S.:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "personpay",
+      "label": "Person/Entity Paying for Your Trip:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "departcity",
+      "label": "Other Persons Traveling with You:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "prevstay",
+      "label": "Have you ever been in the U.S.?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "datearr1",
+      "label": "Date Arrived (1):",
+      "type": "text",
+      "placeholder": "MM/DD/YYYY",
+      "required": true,
+      "fullWidth": false
+    },    {
+      "id": "lstay1",
+      "label": "Length of Stay:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "datearr2",
+      "label": "Date Arrived (2):",
+      "type": "text",
+      "placeholder": "MM/DD/YYYY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "lstay2",
+      "label": "Length of Stay:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "datearr3",
+      "label": "Date Arrived (3):",
+      "type": "text",
+      "placeholder": "MM/DD/YYYY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "lstay3",
+      "label": "Length of Stay:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "dmv",
+      "label": "Do you or did you ever hold a U.S. Driver's License?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "isvisa",
+      "label": "Have you ever been issued a U.S. Visa?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "lastvisa",
+      "label": "Date Last Visa was Issued:",
+      "type": "text",
+      "placeholder": "MM/DD/YYYY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "Visa Number:",
+      "label": "Departure City:",
+      "type": "text",
+      "placeholder": "DOES NOT APPLY",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "samevisa",
+      "label": "Are you applying for the same type of visa?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "samevisaloc",
+      "label": "Are you applying in the same country or location where the visa above was issued, and is this country or location your place of principal ofresidence?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "tenprint",
+      "label": "Have you been ten-printed?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "stolenvisa",
+      "label": "Has your U.S. Visa ever been lost or stolen?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "revokedvisa",
+      "label": "Has your U.S. Visa ever been cancelled or revoked?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    },
+    {
+      "id": "refusedvisa",
+      "label": "Have you ever been refused a U.S. Visa, or been refused admission to the United States, or withdrawn your application for admission at theport of entry?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    },
+        {
+      "id": "immigvisa",
+      "label": "Has anyone ever filed an immigrant petition on your behalf with the United States Citizenship and Immigration Services?",
+      "type": "select",
+      "placeholder": "YES,NO",
+      "required": true,
+      "fullWidth": false
+    }
+    
+    ]
+}

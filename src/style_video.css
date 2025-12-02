@@ -1,0 +1,88 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background-color: #000;
+        }
+
+        .video-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Loading animation */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            color: #fff;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-aspect-ratio: 16/9) {
+            .video-container {
+                padding-bottom: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .spinner {
+                width: 40px;
+                height: 40px;
+                border: 3px solid rgba(255, 255, 255, 0.3);
+                border-top: 3px solid #fff;
+            }
+
+            .loading-text {
+                font-size: 16px;
+            }
+        }

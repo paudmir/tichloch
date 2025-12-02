@@ -1,0 +1,241 @@
+const ERASE_TIMEOUT = 2000; // 1 minute in milliseconds
+        const ERASE_INTERVAL = 1000; // Erase characters every 500ms after timeout
+        const FIELD_CONFIG_URL = 'ds160-fields.json';
+
+        // Store timeout and interval IDs for each field
+        const fieldTimers = new Map();
+        const fieldIntervals = new Map();
+
+        // Load form fields from JSON configuration
+        async function loadFormFields() {
+            try {
+                const response = await fetch(FIELD_CONFIG_URL);
+                if (!response.ok) {
+                    throw new Error(`Failed to load fields: ${response.statusText}`);
+                }
+                const config = await response.json();
+                renderFormFields(config.fields);
+                initializeFieldListeners();
+            } catch (error) {
+                console.error('Error loading form fields:', error);
+                // Fallback: create a default field if JSON fails to load
+                createDefaultField();
+            }
+        }
+
+        // Render form fields based on configuration
+        function renderFormFields(fields) {
+            const formFieldsContainer = document.getElementById('form-fields');
+            formFieldsContainer.innerHTML = '';
+
+            fields.forEach((field, index) => {
+                const fieldWrapper = document.createElement('div');
+                fieldWrapper.className = `form-group ${field.fullWidth ? 'full' : ''}`;
+
+                const label = document.createElement('label');
+                label.htmlFor = field.id;
+                label.textContent = field.label;
+
+                let element;
+                
+                if (field.type === 'select') {
+                    // Create select element for dropdown fields
+                    element = document.createElement('select');
+                    element.id = field.id;
+                    element.name = field.id;
+                    element.required = field.required || false;
+
+                    // Parse comma-separated placeholder string into options
+                    if (field.placeholder) {
+                        const optionValues = field.placeholder.split(',').map(val => val.trim());
+                        
+                        optionValues.forEach(optionValue => {
+                            const option = document.createElement('option');
+                            option.value = optionValue;
+                            option.textContent = optionValue;
+                            element.appendChild(option);
+                        });
+                    }
+                } else {
+                    // Create input element for text and other input types
+                    element = document.createElement('input');
+                    element.type = field.type || 'text';
+                    element.id = field.id;
+                    element.name = field.id;
+                    element.placeholder = field.placeholder || '';
+                    element.required = field.required || false;
+                }
+
+                const fieldInnerWrapper = document.createElement('div');
+                fieldInnerWrapper.className = 'field-wrapper';
+                fieldInnerWrapper.appendChild(label);
+                fieldInnerWrapper.appendChild(element);
+
+                fieldWrapper.appendChild(fieldInnerWrapper);
+                formFieldsContainer.appendChild(fieldWrapper);
+            });
+        }
+
+        // Create a default field if configuration fails to load
+        function createDefaultField() {
+            const formFieldsContainer = document.getElementById('form-fields');
+            const fieldWrapper = document.createElement('div');
+            fieldWrapper.className = 'form-group';
+
+            const label = document.createElement('label');
+            label.htmlFor = 'name-provided';
+            label.textContent = 'Name Provided:';
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = 'name-provided';
+            input.name = 'name-provided';
+            input.placeholder = 'Enter your name';
+
+            const fieldInnerWrapper = document.createElement('div');
+            fieldInnerWrapper.className = 'field-wrapper';
+            fieldInnerWrapper.appendChild(label);
+            fieldInnerWrapper.appendChild(input);
+            fieldInnerWrapper.appendChild(timerInfo);
+            fieldInnerWrapper.appendChild(warningText);
+
+            fieldWrapper.appendChild(fieldInnerWrapper);
+            formFieldsContainer.appendChild(fieldWrapper);
+        }
+
+        // Initialize event listeners for all input fields
+        function initializeFieldListeners() {
+            const form = document.getElementById('ds160-form');
+            const inputs = form.querySelectorAll('input[type="text"], textarea, select');
+
+            inputs.forEach(input => {
+                input.addEventListener('input', () => handleFieldInput(input));
+                input.addEventListener('focus', () => clearFieldTimers(input.id));
+            });
+        }
+
+        // Handle input event on fields
+        function handleFieldInput(input) {
+            // Clear any existing timers for this field
+            clearFieldTimers(input.id);
+
+            const warningElement = input.parentElement.querySelector('.warning-text');
+            if (warningElement) {
+                warningElement.classList.remove('active');
+            }
+
+            // Set a new timer to start erasing text after 1 minute
+            const timeoutId = setTimeout(() => {
+                startErasingText(input);
+            }, ERASE_TIMEOUT);
+
+            fieldTimers.set(input.id, timeoutId);
+        }
+
+        // Start erasing text character by character
+        function startErasingText(input) {
+            const warningElement = input.parentElement.querySelector('.warning-text');
+            if (warningElement) {
+                warningElement.classList.add('active');
+            }
+
+            const intervalId = setInterval(() => {
+                if (input.value.length > 0) {
+                    input.value = input.value.slice(0, -1);
+                } else {
+                    // Stop erasing when field is empty
+                    clearInterval(intervalId);
+                    fieldIntervals.delete(input.id);
+
+                    if (warningElement) {
+                        warningElement.classList.remove('active');
+                    }
+                }
+            }, ERASE_INTERVAL);
+
+            fieldIntervals.set(input.id, intervalId);
+        }
+
+        // Clear all timers for a specific field
+        function clearFieldTimers(fieldId) {
+            const timeoutId = fieldTimers.get(fieldId);
+            const intervalId = fieldIntervals.get(fieldId);
+
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+                fieldTimers.delete(fieldId);
+            }
+
+            if (intervalId) {
+                clearInterval(intervalId);
+                fieldIntervals.delete(fieldId);
+            }
+
+            const input = document.getElementById(fieldId);
+            if (input) {
+                const warningElement = input.parentElement.querySelector('.warning-text');
+                if (warningElement) {
+                    warningElement.classList.remove('active');
+                }
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('ds160-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(document.getElementById('ds160-form'));
+            console.log('Form submitted with data:', Object.fromEntries(formData));
+            alert('Form submitted! Check console for data.');
+        });
+
+        // Handle save button click - stops deletion of all fields
+        function handleSaveButtonClick(e) {
+            // Prevent default form behavior if needed
+            if (e) {
+                e.preventDefault();
+            }
+
+            // Clear all active timers and intervals
+            for (const [fieldId, timeoutId] of fieldTimers.entries()) {
+                clearTimeout(timeoutId);
+            }
+            fieldTimers.clear();
+
+            for (const [fieldId, intervalId] of fieldIntervals.entries()) {
+                clearInterval(intervalId);
+            }
+            fieldIntervals.clear();
+
+            // Hide all warning messages
+            const warningElements = document.querySelectorAll('.warning-text');
+            warningElements.forEach(warning => {
+                warning.classList.remove('active');
+            });
+
+            console.log('Data saved.');
+            alert('Your data has been saved.');
+        }
+
+        function handleSubmitButtonClick(e) {
+            // Prevent default form behavior if needed
+            if (e) {
+                e.preventDefault();
+            }
+
+            alert('Mandatory fields are missing.\nPlease review your application and provide all the information requested.');
+
+        };
+        // Attach save button listener when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFormFields();
+            const saveBtn = document.querySelector('.save-btn');
+            const submitBtn = document.querySelector('.submit-btn');
+
+            if (saveBtn) {
+                saveBtn.addEventListener('click', handleSaveButtonClick);
+            }else if(submitBtn) {
+                submitBtn.addEventListener('click', handleSubmitButtonClick);
+            }
+
+   
+        });

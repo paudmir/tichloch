@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tichloch</title>
+    <link rel="stylesheet" href="style_video.css" />
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.gif">
+</head>
+<body>
+    <div class="video-container">
+        <!-- Loading animation -->
+        <div class="loading">
+            <div class="spinner"></div>
+            <div class="loading-text">loading...</div>
+        </div>
+
+        <!-- Vimeo video player -->
+        <div class="video-wrapper">
+            <iframe
+                id="vimeo-player"
+                src="https://player.vimeo.com/video/1140280874?autoplay=1"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <script>
+        // Hide loading animation when iframe is ready
+        const iframeElement = document.getElementById('vimeo-player');
+        const loading = document.querySelector('.loading');
+
+        // Use Vimeo Player API
+        const player = new Vimeo.Player(iframeElement);
+
+        iframeElement.addEventListener('load', function() {
+            loading.style.display = 'none';
+        });
+
+        // Set a timeout to hide loading after 3 seconds anyway (in case load event doesn't fire)
+        setTimeout(function() {
+            loading.style.display = 'none';
+        }, 3000);
+
+        // Track video end and navigate to index.html
+        player.on('ended', function() {
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
