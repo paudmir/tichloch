@@ -1,241 +1,305 @@
-const ERASE_TIMEOUT = 2000; // 1 minute in milliseconds
-        const ERASE_INTERVAL = 1000; // Erase characters every 500ms after timeout
-        const FIELD_CONFIG_URL = 'ds160-fields.json';
+const ERASE_TIMEOUT = 2000; // milliseconds
+const ERASE_INTERVAL = 1000; // Erase characters every ms after timeout
+const FIELD_CONFIG_URL = 'ds160-fields.json';
+const CMT_CONFIG_URL = 'comm160.json';
 
-        // Store timeout and interval IDs for each field
-        const fieldTimers = new Map();
-        const fieldIntervals = new Map();
+// Store timeout and interval IDs for each field
+const fieldTimers = new Map();
+const fieldIntervals = new Map();
+let commentsForm = null;
+let currentCommentIndex = 0;
+let commentDisplayInterval = null;
 
-        // Load form fields from JSON configuration
-        async function loadFormFields() {
-            try {
-                const response = await fetch(FIELD_CONFIG_URL);
-                if (!response.ok) {
-                    throw new Error(`Failed to load fields: ${response.statusText}`);
-                }
-                const config = await response.json();
-                renderFormFields(config.fields);
-                initializeFieldListeners();
-            } catch (error) {
-                console.error('Error loading form fields:', error);
-                // Fallback: create a default field if JSON fails to load
-                createDefaultField();
+// Load form fields from JSON configuration
+async function loadFormFields() {
+    try {
+        const response = await fetch(FIELD_CONFIG_URL);
+        if (!response.ok) {
+            throw new Error(`Failed to load fields: ${response.statusText}`);
+        }
+        const config = await response.json();
+        renderFormFields(config.fields);
+        initializeFieldListeners();
+    } catch (error) {
+        console.error('Error loading form fields:', error);
+        // Fallback: create a default field if JSON fails to load
+        createDefaultField();
+    }
+}
+
+async function loadCommentsFields() {
+    try {
+        const response = await fetch(CMT_CONFIG_URL);
+        if (!response.ok) {
+            throw new Error(`Failed to load fields: ${response.statusText}`);
+        }
+        commentsForm = await response.json();
+        startCommentDisplay();
+    } catch (error) {
+        console.error('Error loading comments:', error);
+    }
+}
+
+// Display comments as overlays every 30 seconds
+function startCommentDisplay() {
+    if (!commentsForm || !commentsForm.comments || commentsForm.comments.length === 0) {
+        console.warn('No comments available to display');
+        return;
+    }
+
+    // Display first comment immediately, then every 10 seconds
+    displayNextComment();
+    
+    commentDisplayInterval = setInterval(() => {
+        displayNextComment();
+    }, 10000); // 10 seconds
+}
+
+// Display the next comment as an overlay
+function displayNextComment() {
+    const comments = commentsForm.comments;
+    
+    if (!comments || comments.length === 0) return;
+
+    // Get the current comment
+    const currentComment = comments[currentCommentIndex];
+    
+    // Create and display the overlay
+    const container = document.getElementById('comments-overlay-container');
+    
+    // Clear previous overlay
+    container.innerHTML = '';
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'comment-overlay';
+    overlay.textContent = currentComment.com;
+    
+    container.appendChild(overlay);
+    
+    // Move to next comment (cycle through)
+    currentCommentIndex = (currentCommentIndex + 1) % comments.length;
+    
+    // Remove overlay after animation completes (8 seconds)
+    setTimeout(() => {
+        overlay.remove();
+    }, 8000);
+}
+
+
+// Render form fields based on configuration
+function renderFormFields(fields) {
+    const formFieldsContainer = document.getElementById('form-fields');
+    formFieldsContainer.innerHTML = '';
+
+    fields.forEach((field, index) => {
+        const fieldWrapper = document.createElement('div');
+        fieldWrapper.className = `form-group ${field.fullWidth ? 'full' : ''}`;
+
+        const label = document.createElement('label');
+        label.htmlFor = field.id;
+        label.textContent = field.label;
+
+        let element;
+
+        if (field.type === 'select') {
+            // Create select element for dropdown fields
+            element = document.createElement('select');
+            element.id = field.id;
+            element.name = field.id;
+            element.required = field.required || false;
+
+            // Parse comma-separated placeholder string into options
+            if (field.placeholder) {
+                const optionValues = field.placeholder.split(',').map(val => val.trim());
+
+                optionValues.forEach(optionValue => {
+                    const option = document.createElement('option');
+                    option.value = optionValue;
+                    option.textContent = optionValue;
+                    element.appendChild(option);
+                });
             }
+        } else {
+            // Create input element for text and other input types
+            element = document.createElement('input');
+            element.type = field.type || 'text';
+            element.id = field.id;
+            element.name = field.id;
+            element.placeholder = field.placeholder || '';
+            element.required = field.required || false;
         }
 
-        // Render form fields based on configuration
-        function renderFormFields(fields) {
-            const formFieldsContainer = document.getElementById('form-fields');
-            formFieldsContainer.innerHTML = '';
+        const fieldInnerWrapper = document.createElement('div');
+        fieldInnerWrapper.className = 'field-wrapper';
+        fieldInnerWrapper.appendChild(label);
+        fieldInnerWrapper.appendChild(element);
 
-            fields.forEach((field, index) => {
-                const fieldWrapper = document.createElement('div');
-                fieldWrapper.className = `form-group ${field.fullWidth ? 'full' : ''}`;
+        fieldWrapper.appendChild(fieldInnerWrapper);
+        formFieldsContainer.appendChild(fieldWrapper);
+    });
+}
 
-                const label = document.createElement('label');
-                label.htmlFor = field.id;
-                label.textContent = field.label;
+// Create a default field if configuration fails to load
+function createDefaultField() {
+    const formFieldsContainer = document.getElementById('form-fields');
+    const fieldWrapper = document.createElement('div');
+    fieldWrapper.className = 'form-group';
 
-                let element;
-                
-                if (field.type === 'select') {
-                    // Create select element for dropdown fields
-                    element = document.createElement('select');
-                    element.id = field.id;
-                    element.name = field.id;
-                    element.required = field.required || false;
+    const label = document.createElement('label');
+    label.htmlFor = 'name-provided';
+    label.textContent = 'Name Provided:';
 
-                    // Parse comma-separated placeholder string into options
-                    if (field.placeholder) {
-                        const optionValues = field.placeholder.split(',').map(val => val.trim());
-                        
-                        optionValues.forEach(optionValue => {
-                            const option = document.createElement('option');
-                            option.value = optionValue;
-                            option.textContent = optionValue;
-                            element.appendChild(option);
-                        });
-                    }
-                } else {
-                    // Create input element for text and other input types
-                    element = document.createElement('input');
-                    element.type = field.type || 'text';
-                    element.id = field.id;
-                    element.name = field.id;
-                    element.placeholder = field.placeholder || '';
-                    element.required = field.required || false;
-                }
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'name-provided';
+    input.name = 'name-provided';
+    input.placeholder = 'Enter your name';
 
-                const fieldInnerWrapper = document.createElement('div');
-                fieldInnerWrapper.className = 'field-wrapper';
-                fieldInnerWrapper.appendChild(label);
-                fieldInnerWrapper.appendChild(element);
+    const fieldInnerWrapper = document.createElement('div');
+    fieldInnerWrapper.className = 'field-wrapper';
+    fieldInnerWrapper.appendChild(label);
+    fieldInnerWrapper.appendChild(input);
+    fieldInnerWrapper.appendChild(timerInfo);
+    fieldInnerWrapper.appendChild(warningText);
 
-                fieldWrapper.appendChild(fieldInnerWrapper);
-                formFieldsContainer.appendChild(fieldWrapper);
-            });
-        }
+    fieldWrapper.appendChild(fieldInnerWrapper);
+    formFieldsContainer.appendChild(fieldWrapper);
+}
 
-        // Create a default field if configuration fails to load
-        function createDefaultField() {
-            const formFieldsContainer = document.getElementById('form-fields');
-            const fieldWrapper = document.createElement('div');
-            fieldWrapper.className = 'form-group';
+// Initialize event listeners for all input fields
+function initializeFieldListeners() {
+    const form = document.getElementById('ds160-form');
+    const inputs = form.querySelectorAll('input[type="text"], textarea, select');
 
-            const label = document.createElement('label');
-            label.htmlFor = 'name-provided';
-            label.textContent = 'Name Provided:';
+    inputs.forEach(input => {
+        input.addEventListener('input', () => handleFieldInput(input));
+        input.addEventListener('focus', () => clearFieldTimers(input.id));
+    });
+}
 
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.id = 'name-provided';
-            input.name = 'name-provided';
-            input.placeholder = 'Enter your name';
+// Handle input event on fields
+function handleFieldInput(input) {
+    // Clear any existing timers for this field
+    clearFieldTimers(input.id);
 
-            const fieldInnerWrapper = document.createElement('div');
-            fieldInnerWrapper.className = 'field-wrapper';
-            fieldInnerWrapper.appendChild(label);
-            fieldInnerWrapper.appendChild(input);
-            fieldInnerWrapper.appendChild(timerInfo);
-            fieldInnerWrapper.appendChild(warningText);
+    const warningElement = input.parentElement.querySelector('.warning-text');
+    if (warningElement) {
+        warningElement.classList.remove('active');
+    }
 
-            fieldWrapper.appendChild(fieldInnerWrapper);
-            formFieldsContainer.appendChild(fieldWrapper);
-        }
+    // Set a new timer to start erasing text after 1 minute
+    const timeoutId = setTimeout(() => {
+        startErasingText(input);
+    }, ERASE_TIMEOUT);
 
-        // Initialize event listeners for all input fields
-        function initializeFieldListeners() {
-            const form = document.getElementById('ds160-form');
-            const inputs = form.querySelectorAll('input[type="text"], textarea, select');
+    fieldTimers.set(input.id, timeoutId);
+}
 
-            inputs.forEach(input => {
-                input.addEventListener('input', () => handleFieldInput(input));
-                input.addEventListener('focus', () => clearFieldTimers(input.id));
-            });
-        }
+// Start erasing text character by character
+function startErasingText(input) {
+    const warningElement = input.parentElement.querySelector('.warning-text');
+    if (warningElement) {
+        warningElement.classList.add('active');
+    }
 
-        // Handle input event on fields
-        function handleFieldInput(input) {
-            // Clear any existing timers for this field
-            clearFieldTimers(input.id);
+    const intervalId = setInterval(() => {
+        if (input.value.length > 0) {
+            input.value = input.value.slice(0, -1);
+        } else {
+            // Stop erasing when field is empty
+            clearInterval(intervalId);
+            fieldIntervals.delete(input.id);
 
-            const warningElement = input.parentElement.querySelector('.warning-text');
             if (warningElement) {
                 warningElement.classList.remove('active');
             }
-
-            // Set a new timer to start erasing text after 1 minute
-            const timeoutId = setTimeout(() => {
-                startErasingText(input);
-            }, ERASE_TIMEOUT);
-
-            fieldTimers.set(input.id, timeoutId);
         }
+    }, ERASE_INTERVAL);
 
-        // Start erasing text character by character
-        function startErasingText(input) {
-            const warningElement = input.parentElement.querySelector('.warning-text');
-            if (warningElement) {
-                warningElement.classList.add('active');
-            }
+    fieldIntervals.set(input.id, intervalId);
+}
 
-            const intervalId = setInterval(() => {
-                if (input.value.length > 0) {
-                    input.value = input.value.slice(0, -1);
-                } else {
-                    // Stop erasing when field is empty
-                    clearInterval(intervalId);
-                    fieldIntervals.delete(input.id);
+// Clear all timers for a specific field
+function clearFieldTimers(fieldId) {
+    const timeoutId = fieldTimers.get(fieldId);
+    const intervalId = fieldIntervals.get(fieldId);
 
-                    if (warningElement) {
-                        warningElement.classList.remove('active');
-                    }
-                }
-            }, ERASE_INTERVAL);
+    if (timeoutId) {
+        clearTimeout(timeoutId);
+        fieldTimers.delete(fieldId);
+    }
 
-            fieldIntervals.set(input.id, intervalId);
+    if (intervalId) {
+        clearInterval(intervalId);
+        fieldIntervals.delete(fieldId);
+    }
+
+    const input = document.getElementById(fieldId);
+    if (input) {
+        const warningElement = input.parentElement.querySelector('.warning-text');
+        if (warningElement) {
+            warningElement.classList.remove('active');
         }
+    }
+}
 
-        // Clear all timers for a specific field
-        function clearFieldTimers(fieldId) {
-            const timeoutId = fieldTimers.get(fieldId);
-            const intervalId = fieldIntervals.get(fieldId);
+// Handle form submission
+document.getElementById('ds160-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(document.getElementById('ds160-form'));
+    console.log('Form submitted with data:', Object.fromEntries(formData));
+    alert('Form submitted! Check console for data.');
+});
 
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-                fieldTimers.delete(fieldId);
-            }
+// Handle save button click - stops deletion of all fields
+function handleSaveButtonClick(e) {
+    // Prevent default form behavior if needed
+    if (e) {
+        e.preventDefault();
+    }
 
-            if (intervalId) {
-                clearInterval(intervalId);
-                fieldIntervals.delete(fieldId);
-            }
+    // Clear all active timers and intervals
+    for (const [fieldId, timeoutId] of fieldTimers.entries()) {
+        clearTimeout(timeoutId);
+    }
+    fieldTimers.clear();
 
-            const input = document.getElementById(fieldId);
-            if (input) {
-                const warningElement = input.parentElement.querySelector('.warning-text');
-                if (warningElement) {
-                    warningElement.classList.remove('active');
-                }
-            }
-        }
+    for (const [fieldId, intervalId] of fieldIntervals.entries()) {
+        clearInterval(intervalId);
+    }
+    fieldIntervals.clear();
 
-        // Handle form submission
-        document.getElementById('ds160-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(document.getElementById('ds160-form'));
-            console.log('Form submitted with data:', Object.fromEntries(formData));
-            alert('Form submitted! Check console for data.');
-        });
+    // Hide all warning messages
+    const warningElements = document.querySelectorAll('.warning-text');
+    warningElements.forEach(warning => {
+        warning.classList.remove('active');
+    });
 
-        // Handle save button click - stops deletion of all fields
-        function handleSaveButtonClick(e) {
-            // Prevent default form behavior if needed
-            if (e) {
-                e.preventDefault();
-            }
+    console.log('Data saved.');
+    alert('Your data has been saved.');
+}
 
-            // Clear all active timers and intervals
-            for (const [fieldId, timeoutId] of fieldTimers.entries()) {
-                clearTimeout(timeoutId);
-            }
-            fieldTimers.clear();
+function handleSubmitButtonClick(e) {
+    // Prevent default form behavior if needed
+    if (e) {
+        e.preventDefault();
+    }
 
-            for (const [fieldId, intervalId] of fieldIntervals.entries()) {
-                clearInterval(intervalId);
-            }
-            fieldIntervals.clear();
+    alert('Mandatory fields are missing.\nPlease review your application and provide all the information requested.');
 
-            // Hide all warning messages
-            const warningElements = document.querySelectorAll('.warning-text');
-            warningElements.forEach(warning => {
-                warning.classList.remove('active');
-            });
+};
+// Attach save button listener when page loads
+window.addEventListener('DOMContentLoaded', () => {
+    loadFormFields();
+    loadCommentsFields();
+    const saveBtn = document.querySelector('.save-btn');
+    const submitBtn = document.querySelector('.submit-btn');
 
-            console.log('Data saved.');
-            alert('Your data has been saved.');
-        }
+    if (saveBtn) {
+        saveBtn.addEventListener('click', handleSaveButtonClick);
+    } else if (submitBtn) {
+        submitBtn.addEventListener('click', handleSubmitButtonClick);
+    }
 
-        function handleSubmitButtonClick(e) {
-            // Prevent default form behavior if needed
-            if (e) {
-                e.preventDefault();
-            }
 
-            alert('Mandatory fields are missing.\nPlease review your application and provide all the information requested.');
-
-        };
-        // Attach save button listener when page loads
-        window.addEventListener('DOMContentLoaded', () => {
-            loadFormFields();
-            const saveBtn = document.querySelector('.save-btn');
-            const submitBtn = document.querySelector('.submit-btn');
-
-            if (saveBtn) {
-                saveBtn.addEventListener('click', handleSaveButtonClick);
-            }else if(submitBtn) {
-                submitBtn.addEventListener('click', handleSubmitButtonClick);
-            }
-
-   
-        });
+});
