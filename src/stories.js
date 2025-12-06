@@ -6,11 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Photo data - you can expand this array with more photos
     const photos = [
         {
-            src: '/static/assets/images/test1.jpg',
+            src: '/assets/images/test1.jpg',
             story: 'This is the story all about how my life got twisted upside down'
         },
         {
-            src: '/static/assets/images/test2.jpg',
+            src: '/assets/images/test2.jpg',
             story: 'This is the story all about how my life got twisted upside down'
         }
     ];
