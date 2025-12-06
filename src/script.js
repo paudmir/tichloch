@@ -16,5 +16,5 @@
 
         // Track video end and navigate to index.html
         player.on('ended', function() {
-            window.location.href = 'index.html';
+            window.location.href = 'ds160.html';
         });
