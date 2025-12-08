@@ -7,7 +7,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-image: url('assets/images/concrete.png');
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -17,7 +17,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            /*max-width: 1200px;*/
             width: 100%;
         }
 
@@ -43,22 +43,24 @@
         .carousel-container {
             position: relative;
             width: 100%;
-            max-width: 800px;
             margin: 0 auto;
         }
 
         .carousel {
             display: flex;
-            overflow-x: auto;
+            flex-direction: column;
+            overflow-y: auto;
             scroll-behavior: smooth;
             gap: 20px;
             padding: 20px;
             scrollbar-width: thin;
             scrollbar-color: rgba(255,255,255,0.3) transparent;
+            align-self: center;
+            max-height: 80vh;
         }
 
         .carousel::-webkit-scrollbar {
-            height: 8px;
+            width: 8px;
         }
 
         .carousel::-webkit-scrollbar-track {
@@ -77,17 +79,22 @@
 
         .photo-card {
             flex: 0 0 auto;
-            width: 300px;
+            width: 100%;
+            max-width: 1200px;
             background: white;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             transition: transform 0.3s ease;
             cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            min-height: 400px;
+            position: relative;
         }
 
         .photo-card:hover {
-            transform: translateY(-5px);
+            transform: translateX(-5px);
         }
 
         .photo-card.active {
@@ -96,9 +103,11 @@
 
         .photo-wrapper {
             position: relative;
-            width: 100%;
-            height: 400px;
+            width: 40%;
+            min-width: 300px;
+            height: auto;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .photo {
@@ -114,20 +123,27 @@
         }
 
         .story-text {
-            padding: 20px;
+            padding: 30px;
             display: none;
             background: #f8f9fa;
             min-height: 100px;
+            flex: 1;
+            overflow-y: auto;
         }
 
         .story-text.visible {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .story-text p {
             color: #333;
-            line-height: 1.6;
-            font-size: 1rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 0;
         }
 
         .mic-indicator {
@@ -137,7 +153,11 @@
             gap: 10px;
             padding: 10px;
             background: rgba(255,0,0,0.1);
-            border-top: 2px solid rgba(255,0,0,0.3);
+            border-left: 2px solid rgba(255,0,0,0.3);
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            border-radius: 10px;
         }
 
         .mic-indicator.active {

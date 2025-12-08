@@ -12,6 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let analyser = null;
     let animationFrameId = null;
     let currentBlur = 20; // Starting blur value
+    let readingTime = 0; // Total reading time in seconds
+    let targetUnblurRate = 0; // Target unblur rate based on reading time
+
+    // Function to calculate reading time based on text content (average reading speed: 200 words per minute)
+    function calculateReadingTime(textArray) {
+        const wordsPerMinute = 220;
+        const totalWords = textArray.reduce((sum, text) => {
+            return sum + text.split(/\s+/).filter(word => word.length > 0).length;
+        }, 0);
+        return (totalWords / wordsPerMinute) * 60; // Convert to seconds
+    }
 
     // Function to generate progressive HSL color for paragraphs
     function getParagraphColor(index) {
@@ -99,10 +110,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const storyText = card.querySelector('.story-text');
         storyText.classList.add('visible');
 
+        // Calculate reading time for this story
+        readingTime = calculateReadingTime(photos[index].txt);
+
+        // Calculate target unblur rate: we need to unblur 20px over readingTime seconds
+        // The unblur rate per frame should be adjusted so total unblur happens during reading time
+        // At 60fps, we'll have approximately readingTime * 60 frames
+        // We need to reduce blur from 20 to 0 over this time when user is speaking
+        // Assuming user speaks at threshold volume, unblur rate = 20 / (readingTime * 60 * average_normalized_volume)
+        // We'll use a more conservative estimate assuming 50% speaking time
+        targetUnblurRate = 20 / (readingTime * 60 * 0.5);
+
         // Reset blur for new photo
         currentBlur = 20;
         const photo = card.querySelector('.photo');
         photo.style.filter = `blur(${currentBlur}px)`;
+
+        console.log(`Reading time: ${readingTime.toFixed(1)}s, Target unblur rate: ${targetUnblurRate.toFixed(4)} px/frame`);
 
         // Start microphone
         await startMicrophone(card);
@@ -218,12 +242,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Unblur photo based on audio level
         // Only unblur if volume is above a threshold (e.g., 0.1)
         if (normalizedVolume > 0.1 && currentBlur > 0) {
-            // Reduce blur gradually - higher volume = faster unblur
-            const unblurRate = normalizedVolume * 0.5; // Adjust this for speed
+            // Use the calculated unblur rate based on reading time
+            // Scale it by the normalized volume so louder speaking = faster unblur
+            const unblurRate = targetUnblurRate * normalizedVolume ; // multiply by 2 to account for typical speaking volume
             currentBlur = Math.max(0, currentBlur - unblurRate);
 
             const photo = card.querySelector('.photo');
             photo.style.filter = `blur(${currentBlur}px)`;
+            console.log("we've blurred: ",currentBlur);
         }
 
         // Continue analyzing
@@ -233,14 +259,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Navigation buttons
     prevBtn.addEventListener('click', () => {
         carousel.scrollBy({
-            left: -320,
+            top: -420,
             behavior: 'smooth'
         });
     });
 
     nextBtn.addEventListener('click', () => {
         carousel.scrollBy({
-            left: 320,
+            top: 420,
             behavior: 'smooth'
         });
     });
