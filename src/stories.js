@@ -6,11 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Photo data - you can expand this array with more photos
     const photos = [
         {
-            src: '/assets/images/test1.jpg',
+            src: 'assets/images/test1.jpg',
             story: 'This is the story all about how my life got twisted upside down'
         },
         {
-            src: '/assets/images/test2.jpg',
+            src: 'assets/images/test2.jpg',
             story: 'This is the story all about how my life got twisted upside down'
         }
     ];
@@ -94,6 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start microphone and audio detection
     async function startMicrophone(card) {
         try {
+            // Check if mediaDevices is supported
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                throw new Error('getUserMedia is not supported in this browser or context. Please use HTTPS.');
+            }
+
             // Request microphone access
             mediaStream = await navigator.mediaDevices.getUserMedia({
                 audio: {
@@ -121,7 +126,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Error accessing microphone:', error);
-            alert('Could not access microphone. Please grant permission and try again.');
+
+            let errorMessage = 'Could not access microphone. ';
+            if (error.message && error.message.includes('HTTPS')) {
+                errorMessage += 'This feature requires HTTPS. Please access the site using https:// instead of http://';
+            } else if (error.name === 'NotAllowedError') {
+                errorMessage += 'Please grant microphone permission and try again.';
+            } else if (error.name === 'NotFoundError') {
+                errorMessage += 'No microphone found on your device.';
+            } else {
+                errorMessage += error.message || 'Please grant permission and try again.';
+            }
+
+            alert(errorMessage);
         }
     }
 
