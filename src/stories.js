@@ -2,18 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const carousel = document.getElementById('carousel');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    const STORY_URL = 'assets/json/stories.json';
 
-    // Photo data - you can expand this array with more photos
-    const photos = [
-        {
-            src: 'assets/images/test1.jpg',
-            story: 'This is the story all about how my life got twisted upside down'
-        },
-        {
-            src: 'assets/images/test2.jpg',
-            story: 'This is the story all about how my life got twisted upside down'
-        }
-    ];
+    let photos = [];
 
     let activeCard = null;
     let mediaStream = null;
@@ -22,6 +13,38 @@ document.addEventListener('DOMContentLoaded', () => {
     let animationFrameId = null;
     let currentBlur = 20; // Starting blur value
 
+    // Function to generate progressive HSL color for paragraphs
+    function getParagraphColor(index) {
+        // Starting lightness: 96.3%, decrement by 4.9% for each subsequent paragraph
+        const baseLightness = 96.3;
+        const lightnessDecrement = 4.9;
+        const lightness = Math.max(71.6, baseLightness - (index * lightnessDecrement));
+
+        // Saturation also changes slightly
+        const saturation = index === 0 ? 57.9 : 59.1 + (Math.min(index - 1, 1) * 0.3) + (Math.max(0, index - 2) * 0);
+
+        return `hsl(60, ${saturation}%, ${lightness}%)`;
+    }
+
+    // Load stories from JSON file
+    async function loadStories() {
+        try {
+            const response = await fetch(STORY_URL);
+            const data = await response.json();
+
+            // Transform the stories data into the photos array format
+            photos = data.stories.map(item => ({
+                src: item.story.src,
+                txt: item.story.txt
+            }));
+
+            // Once stories are loaded, create the photo cards
+            createPhotoCards();
+        } catch (error) {
+            console.error('Error loading stories:', error);
+        }
+    }
+
     // Create photo cards
     function createPhotoCards() {
         photos.forEach((photo, index) => {
@@ -29,12 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'photo-card';
             card.dataset.index = index;
 
+            // Generate paragraph HTML with progressive colors
+            const paragraphsHTML = photo.txt.map((text, pIndex) => {
+                const color = getParagraphColor(pIndex);
+                return `<p style="background-color: ${color}; color: black;">${text}</p>`;
+            }).join('');
+
             card.innerHTML = `
                 <div class="photo-wrapper">
                     <img class="photo" src="${photo.src}" alt="Photo ${index + 1}">
                 </div>
                 <div class="story-text">
-                    <p>${photo.story}</p>
+                    ${paragraphsHTML}
                 </div>
                 <div class="mic-indicator">
                     <div class="mic-icon"></div>
@@ -216,8 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Initialize
-    createPhotoCards();
+    // Initialize - load stories from JSON
+    loadStories();
 
     // Cleanup on page unload
     window.addEventListener('beforeunload', () => {
