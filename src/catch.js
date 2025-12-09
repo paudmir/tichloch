@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Three.js variables
     let scene, camera, renderer;
     let sphere, solidMesh, wireframeMesh;
+    let textSprite;
     
     // Hand tracking variables
     let rightHandActive = false;
@@ -134,6 +135,70 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         return neonColors[Math.floor(Math.random() * neonColors.length)];
     }
+
+    // Create a text sprite to display inside the sphere
+    function createTextSprite(text) {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = 512;
+        canvas.height = 256;
+
+        // Set up text style
+        context.fillStyle = 'white';
+        context.font = 'bold 80px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+
+        // Draw text on canvas
+        context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+        // Create texture from canvas
+        const texture = new THREE.CanvasTexture(canvas);
+
+        // Create sprite material
+        const spriteMaterial = new THREE.SpriteMaterial({
+            map: texture,
+            transparent: true,
+            opacity: 1.0
+        });
+
+        // Create sprite
+        const sprite = new THREE.Sprite(spriteMaterial);
+        sprite.scale.set(2, 1, 1); // Adjust scale to make text readable
+
+        return sprite;
+    }
+
+    function createTextgen(text){
+        const loader = new THREE.FontLoader();
+        loader.load('fonts/helvetiker_regular.typeface.json', function (font) {
+        const geometry = new THREE.TextGeometry('Hello Three.js!', {
+            font: font,
+            size: 3,
+            height: 0.2,
+            curveSegments: 12,
+            bevelEnabled: false,
+            bevelThickness: 0.5,
+            bevelSize: 0.3,
+            bevelOffset: 0,
+            bevelSegments: 5,
+        });
+    });
+
+    const material = new THREE.MeshFaceMaterial([
+        new THREE.MeshPhongMaterial({
+            color: 0xff22cc,
+            flatShading: true,
+        }), // front
+        new THREE.MeshPhongMaterial({
+            color: 0xffcc22
+        }), // side
+        ])
+        const mesh = new THREE.Mesh(geometry, material)
+        mesh.name = 'text';
+        scene.add(mesh);
+
+    }
     
     // Initialize Three.js
     function initThreeJS() {
@@ -181,8 +246,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         wireframeMesh = new THREE.Mesh(geometry, wireframeMaterial);
         sphere.add(wireframeMesh);
+
+        // Create and add text sprite inside the sphere
+        textSprite = createTextSprite('Hello');
+        console.log('Added text');
+        scene.add(textSprite);
+
         scene.add(sphere);
-        
+
         // Add some ambient light
         const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
         scene.add(ambientLight);

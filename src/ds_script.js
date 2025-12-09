@@ -1,7 +1,8 @@
 const ERASE_TIMEOUT = 2000; // milliseconds
 const ERASE_INTERVAL = 1000; // Erase characters every ms after timeout
-const FIELD_CONFIG_URL = '/assets/json/ds160-fields.json';
-const CMT_CONFIG_URL = '/assets/json/comm160.json';
+const SESSION_TIMEOUT = 60000; // 1 minute in milliseconds
+const FIELD_CONFIG_URL = '/src/assets/json/ds160-fields.json';
+const CMT_CONFIG_URL = '/src/assets/json/comm160.json';
 
 // Store timeout and interval IDs for each field
 const fieldTimers = new Map();
@@ -9,6 +10,7 @@ const fieldIntervals = new Map();
 let commentsForm = null;
 let currentCommentIndex = 0;
 let commentDisplayInterval = null;
+let sessionTimeoutId = null;
 
 // Load form fields from JSON configuration
 async function loadFormFields() {
@@ -58,31 +60,97 @@ function startCommentDisplay() {
 // Display the next comment as an overlay
 function displayNextComment() {
     const comments = commentsForm.comments;
-    
+
     if (!comments || comments.length === 0) return;
 
     // Get the current comment
     const currentComment = comments[currentCommentIndex];
-    
+
     // Create and display the overlay
     const container = document.getElementById('comments-overlay-container');
-    
+
     // Clear previous overlay
     container.innerHTML = '';
-    
+
     const overlay = document.createElement('div');
     overlay.className = 'comment-overlay';
     overlay.textContent = currentComment.com;
-    
+
     container.appendChild(overlay);
-    
+
     // Move to next comment (cycle through)
     currentCommentIndex = (currentCommentIndex + 1) % comments.length;
-    
+
     // Remove overlay after animation completes (8 seconds)
     setTimeout(() => {
         overlay.remove();
     }, 8000);
+}
+
+// Start session timeout timer
+function startSessionTimeout() {
+    sessionTimeoutId = setTimeout(() => {
+        showSessionTimeoutOverlay();
+    }, SESSION_TIMEOUT);
+}
+
+// Display session timeout overlay
+function showSessionTimeoutOverlay() {
+    // Save current form data before timeout
+    saveFormDataToLocalStorage();
+
+    // Create and display the timeout overlay
+    const container = document.getElementById('comments-overlay-container');
+    container.innerHTML = '';
+
+    const overlay = document.createElement('div');
+    overlay.className = 'comment-overlay session-timeout-overlay';
+    overlay.textContent = 'Session timed out';
+
+    container.appendChild(overlay);
+
+    // Reload page after 3 seconds
+    setTimeout(() => {
+        window.location.reload();
+    }, 3000);
+}
+
+// Save form data to localStorage
+function saveFormDataToLocalStorage() {
+    const form = document.getElementById('ds160-form');
+    const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="date"], input[type="number"], textarea, select');
+
+    const formData = {};
+    inputs.forEach(input => {
+        if (input.value) {
+            formData[input.id] = input.value;
+        }
+    });
+
+    localStorage.setItem('ds160FormData', JSON.stringify(formData));
+}
+
+// Restore form data from localStorage
+function restoreFormDataFromLocalStorage() {
+    const savedData = localStorage.getItem('ds160FormData');
+
+    if (savedData) {
+        try {
+            const formData = JSON.parse(savedData);
+
+            // Wait a bit to ensure form fields are rendered
+            setTimeout(() => {
+                Object.keys(formData).forEach(fieldId => {
+                    const input = document.getElementById(fieldId);
+                    if (input) {
+                        input.value = formData[fieldId];
+                    }
+                });
+            }, 100);
+        } catch (error) {
+            console.error('Error restoring form data:', error);
+        }
+    }
 }
 
 
@@ -258,6 +326,9 @@ function handleSaveButtonClick(e) {
         e.preventDefault();
     }
 
+    // Save form data to localStorage
+    saveFormDataToLocalStorage();
+
     // Clear all active timers and intervals
     for (const [fieldId, timeoutId] of fieldTimers.entries()) {
         clearTimeout(timeoutId);
@@ -292,14 +363,20 @@ function handleSubmitButtonClick(e) {
 window.addEventListener('DOMContentLoaded', () => {
     loadFormFields();
     loadCommentsFields();
+
+    // Restore any saved form data
+    restoreFormDataFromLocalStorage();
+
+    // Start session timeout
+    startSessionTimeout();
+
     const saveBtn = document.querySelector('.save-btn');
     const submitBtn = document.querySelector('.submit-btn');
 
     if (saveBtn) {
         saveBtn.addEventListener('click', handleSaveButtonClick);
-    } else if (submitBtn) {
+    }
+    if (submitBtn) {
         submitBtn.addEventListener('click', handleSubmitButtonClick);
     }
-
-
 });

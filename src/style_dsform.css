@@ -170,6 +170,13 @@
             pointer-events: auto;
         }
 
+        .session-timeout-overlay {
+            background-color: rgba(217, 83, 79, 0.95);
+            font-size: 20px;
+            font-weight: bold;
+            animation: sessionTimeout 3s ease-in-out;
+        }
+
         @keyframes easeInOut {
             0% {
                 opacity: 0;
@@ -186,6 +193,25 @@
             100% {
                 opacity: 0;
                 transform: scale(0.6);
+            }
+        }
+
+        @keyframes sessionTimeout {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            80% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
             }
         }
 
