@@ -80,8 +80,6 @@
         .photo-card {
             flex: 0 0 auto;
             width: 100%;
-            /*max-width: 1200px;*/
-            background: white;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -146,32 +144,6 @@
             margin: 0;
         }
 
-        .mic-indicator {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px;
-            background: rgba(255,0,0,0.1);
-            border-left: 2px solid rgba(255,0,0,0.3);
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            border-radius: 10px;
-        }
-
-        .mic-indicator.active {
-            display: flex;
-        }
-
-        .mic-icon {
-            width: 20px;
-            height: 20px;
-            background: #ff0000;
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-
         @keyframes pulse {
             0%, 100% {
                 opacity: 1;
@@ -183,27 +155,6 @@
             }
         }
 
-        .mic-text {
-            color: #333;
-            font-size: 0.9rem;
-        }
-
-        .audio-level {
-            flex: 1;
-            height: 10px;
-            background: rgba(0,0,0,0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            margin: 5px;
-            max-width: 200px;
-        }
-
-        .audio-level-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A);
-            width: 5%;
-            transition: width 0.1s ease;
-        }
 
         .controls {
             text-align: center;

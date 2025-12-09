@@ -7,13 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let photos = [];
 
     let activeCard = null;
-    let mediaStream = null;
-    let audioContext = null;
-    let analyser = null;
     let animationFrameId = null;
     let currentBlur = 20; // Starting blur value
-    let readingTime = 0; // Total reading time in seconds
-    let targetUnblurRate = 0; // Target unblur rate based on reading time
+    let startTime = 0; // Time when card was activated
 
     // Function to calculate reading time based on text content (average reading speed: 200 words per minute)
     function calculateReadingTime(textArray) {
@@ -76,13 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="story-text">
                     ${paragraphsHTML}
                 </div>
-                <div class="mic-indicator">
-                    <div class="mic-icon"></div>
-                    <span class="mic-text">Listening...</span>
-                    <div class="audio-level">
-                        <div class="audio-level-bar"></div>
-                    </div>
-                </div>
             `;
 
             card.addEventListener('click', () => handleCardClick(card, index));
@@ -91,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Handle card click
-    async function handleCardClick(card, index) {
+    function handleCardClick(card, index) {
         // If clicking the same card, do nothing
         if (activeCard === card) {
             return;
@@ -111,25 +100,20 @@ document.addEventListener('DOMContentLoaded', () => {
         storyText.classList.add('visible');
 
         // Calculate reading time for this story
-        readingTime = calculateReadingTime(photos[index].txt);
-
-        // Calculate target unblur rate: we need to unblur 20px over readingTime seconds
-        // The unblur rate per frame should be adjusted so total unblur happens during reading time
-        // At 60fps, we'll have approximately readingTime * 60 frames
-        // We need to reduce blur from 20 to 0 over this time when user is speaking
-        // Assuming user speaks at threshold volume, unblur rate = 20 / (readingTime * 60 * average_normalized_volume)
-        // We'll use a more conservative estimate assuming 50% speaking time
-        targetUnblurRate = 20 / (readingTime * 60 * 0.5);
+        const readingTime = calculateReadingTime(photos[index].txt);
 
         // Reset blur for new photo
         currentBlur = 20;
         const photo = card.querySelector('.photo');
         photo.style.filter = `blur(${currentBlur}px)`;
 
-        console.log(`Reading time: ${readingTime.toFixed(1)}s, Target unblur rate: ${targetUnblurRate.toFixed(4)} px/frame`);
+        // Record start time
+        startTime = performance.now();
 
-        // Start microphone
-        await startMicrophone(card);
+        console.log(`Reading time: ${readingTime.toFixed(1)}s`);
+
+        // Start automatic unblur animation
+        startUnblurAnimation(card, readingTime);
     }
 
     // Deactivate a card
@@ -137,123 +121,50 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.remove('active');
         const storyText = card.querySelector('.story-text');
         storyText.classList.remove('visible');
-        const micIndicator = card.querySelector('.mic-indicator');
-        micIndicator.classList.remove('active');
 
-        // Stop microphone
-        stopMicrophone();
+        // Stop animation
+        stopUnblurAnimation();
     }
 
-    // Start microphone and audio detection
-    async function startMicrophone(card) {
-        try {
-            // Check if mediaDevices is supported
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                throw new Error('getUserMedia is not supported in this browser or context. Please use HTTPS.');
+    // Start automatic unblur animation based on reading time
+    function startUnblurAnimation(card, readingTime) {
+        // Convert reading time to milliseconds
+        const duration = readingTime * 1000;
+        const initialBlur = 20;
+
+        function animate() {
+            if (!activeCard || activeCard !== card) {
+                return;
             }
 
-            // Request microphone access
-            mediaStream = await navigator.mediaDevices.getUserMedia({
-                audio: {
-                    echoCancellation: true,
-                    noiseSuppression: true,
-                    autoGainControl: true
-                }
-            });
+            const elapsed = performance.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
 
-            // Show mic indicator
-            const micIndicator = card.querySelector('.mic-indicator');
-            micIndicator.classList.add('active');
+            // Calculate current blur using easing function (ease-out)
+            const easedProgress = 1 - Math.pow(1 - progress, 3);
+            currentBlur = initialBlur * (1 - easedProgress);
 
-            // Set up audio context and analyser
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            analyser = audioContext.createAnalyser();
-            const microphone = audioContext.createMediaStreamSource(mediaStream);
+            const photo = card.querySelector('.photo');
+            photo.style.filter = `blur(${currentBlur}px)`;
 
-            analyser.fftSize = 256;
-            analyser.smoothingTimeConstant = 0.8;
-            microphone.connect(analyser);
-
-            // Start analyzing audio
-            analyzeAudio(card);
-
-        } catch (error) {
-            console.error('Error accessing microphone:', error);
-
-            let errorMessage = 'Could not access microphone. ';
-            if (error.message && error.message.includes('HTTPS')) {
-                errorMessage += 'This feature requires HTTPS. Please access the site using https:// instead of http://';
-            } else if (error.name === 'NotAllowedError') {
-                errorMessage += 'Please grant microphone permission and try again.';
-            } else if (error.name === 'NotFoundError') {
-                errorMessage += 'No microphone found on your device.';
+            // Continue animation if not complete
+            if (progress < 1) {
+                animationFrameId = requestAnimationFrame(animate);
             } else {
-                errorMessage += error.message || 'Please grant permission and try again.';
+                console.log('Unblur animation complete');
             }
-
-            alert(errorMessage);
         }
+
+        // Start the animation
+        animationFrameId = requestAnimationFrame(animate);
     }
 
-    // Stop microphone
-    function stopMicrophone() {
+    // Stop unblur animation
+    function stopUnblurAnimation() {
         if (animationFrameId) {
             cancelAnimationFrame(animationFrameId);
             animationFrameId = null;
         }
-
-        if (mediaStream) {
-            mediaStream.getTracks().forEach(track => track.stop());
-            mediaStream = null;
-        }
-
-        if (audioContext) {
-            audioContext.close();
-            audioContext = null;
-        }
-
-        analyser = null;
-    }
-
-    // Analyze audio and unblur photo
-    function analyzeAudio(card) {
-        if (!analyser || !activeCard) {
-            return;
-        }
-
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-        analyser.getByteFrequencyData(dataArray);
-
-        // Calculate average volume
-        let sum = 0;
-        for (let i = 0; i < bufferLength; i++) {
-            sum += dataArray[i];
-        }
-        const average = sum / bufferLength;
-
-        // Normalize to 0-1 range
-        const normalizedVolume = average / 255;
-
-        // Update audio level indicator
-        const audioLevelBar = card.querySelector('.audio-level-bar');
-        audioLevelBar.style.width = `${normalizedVolume * 100}%`;
-
-        // Unblur photo based on audio level
-        // Only unblur if volume is above a threshold (e.g., 0.1)
-        if (normalizedVolume > 0.1 && currentBlur > 0) {
-            // Use the calculated unblur rate based on reading time
-            // Scale it by the normalized volume so louder speaking = faster unblur
-            const unblurRate = targetUnblurRate * normalizedVolume ; // multiply by 2 to account for typical speaking volume
-            currentBlur = Math.max(0, currentBlur - unblurRate);
-
-            const photo = card.querySelector('.photo');
-            photo.style.filter = `blur(${currentBlur}px)`;
-            console.log("we've blurred: ",currentBlur);
-        }
-
-        // Continue analyzing
-        animationFrameId = requestAnimationFrame(() => analyzeAudio(card));
     }
 
     // Navigation buttons
@@ -276,6 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cleanup on page unload
     window.addEventListener('beforeunload', () => {
-        stopMicrophone();
+        stopUnblurAnimation();
     });
 });
