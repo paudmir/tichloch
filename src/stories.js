@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let activeCard = null;
     let animationFrameId = null;
-    let currentBlur = 20; // Starting blur value
+    let currentBlur = 80; // Starting blur value
     let startTime = 0; // Time when card was activated
 
     // Function to calculate reading time based on text content (average reading speed: 200 words per minute)
@@ -119,8 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Deactivate a card
     function deactivateCard(card) {
         card.classList.remove('active');
-        const storyText = card.querySelector('.story-text');
-        storyText.classList.remove('visible');
 
         // Stop animation
         stopUnblurAnimation();
@@ -152,6 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 animationFrameId = requestAnimationFrame(animate);
             } else {
                 console.log('Unblur animation complete');
+                const storyText = card.querySelector('.story-text');
+                storyText.classList.add('visible');
             }
         }
 
@@ -169,17 +169,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Navigation buttons
     prevBtn.addEventListener('click', () => {
-        carousel.scrollBy({
-            top: -420,
-            behavior: 'smooth'
-        });
+        const cards = Array.from(carousel.querySelectorAll('.photo-card'));
+        const activeIndex = activeCard ? cards.indexOf(activeCard) : -1;
+
+        if (activeIndex > 0) {
+            // Scroll to and activate previous card
+            const prevCard = cards[activeIndex - 1];
+            prevCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            handleCardClick(prevCard, activeIndex - 1);
+        } else if (cards.length > 0 && activeIndex === -1) {
+            // If no card is active, activate the first card
+            const firstCard = cards[0];
+            firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            handleCardClick(firstCard, 0);
+        }
     });
 
     nextBtn.addEventListener('click', () => {
-        carousel.scrollBy({
-            top: 420,
-            behavior: 'smooth'
-        });
+        const cards = Array.from(carousel.querySelectorAll('.photo-card'));
+        const activeIndex = activeCard ? cards.indexOf(activeCard) : -1;
+
+        if (activeIndex < cards.length - 1) {
+            // Scroll to and activate next card
+            const nextCard = cards[activeIndex + 1];
+            nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            handleCardClick(nextCard, activeIndex + 1);
+        } else if (cards.length > 0 && activeIndex === -1) {
+            // If no card is active, activate the first card
+            const firstCard = cards[0];
+            firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            handleCardClick(firstCard, 0);
+        }
     });
 
     // Initialize - load stories from JSON

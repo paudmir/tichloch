@@ -56,11 +56,11 @@
             scrollbar-width: thin;
             scrollbar-color: rgba(255,255,255,0.3) transparent;
             align-self: center;
-            max-height: 80vh;
+            max-height: 90vh;
         }
 
         .carousel::-webkit-scrollbar {
-            width: 8px;
+            width: 20px;
         }
 
         .carousel::-webkit-scrollbar-track {
@@ -87,7 +87,6 @@
             cursor: pointer;
             display: flex;
             flex-direction: row;
-            min-height: 400px;
             position: relative;
         }
 
@@ -123,19 +122,39 @@
         .story-text {
             padding: 30px;
             display: none;
-            background: #f8f9fa;
             min-height: 100px;
             flex: 1;
             overflow-y: auto;
+
         }
 
         .story-text.visible {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            justify-content: center;
+            align-items: center;
         }
 
-        .story-text p {
+        .story-text.visible p {
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0;
+            animation-fill-mode: forwards; /* Ensure final state is retained */
+        }
+
+        /* Stagger the animation for each paragraph */
+        .story-text.visible p:nth-child(1) { animation-delay: 1s; }
+        .story-text.visible p:nth-child(2) { animation-delay: 4s; }
+        .story-text.visible p:nth-child(3) { animation-delay: 7s; }
+        .story-text.visible p:nth-child(4) { animation-delay: 10s; }
+        .story-text.visible p:nth-child(5) { animation-delay: 13s; }
+        .story-text.visible p:nth-child(6) { animation-delay: 16s; }
+        .story-text.visible p:nth-child(7) { animation-delay: 19s; }
+        .story-text.visible p:nth-child(8) { animation-delay: 22s; }
+        .story-text.visible p:nth-child(9) { animation-delay: 25s; }
+        .story-text.visible p:nth-child(10) { animation-delay: 28s; }
+
+       .story-text p {
             color: #333;
             line-height: 1.8;
             font-size: 1.1rem;
@@ -144,17 +163,16 @@
             margin: 0;
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-                transform: scale(1);
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-            50% {
-                opacity: 0.5;
-                transform: scale(1.2);
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
-
 
         .controls {
             text-align: center;
