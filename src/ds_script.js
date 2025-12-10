@@ -1,8 +1,8 @@
 const ERASE_TIMEOUT = 2000; // milliseconds
 const ERASE_INTERVAL = 1000; // Erase characters every ms after timeout
 const SESSION_TIMEOUT = 60000; // 1 minute in milliseconds
-const FIELD_CONFIG_URL = '/src/assets/json/ds160-fields.json';
-const CMT_CONFIG_URL = '/src/assets/json/comm160.json';
+const FIELD_CONFIG_URL = '/assets/json/ds160-fields.json';
+const CMT_CONFIG_URL = '/assets/json/comm160.json';
 
 // Store timeout and interval IDs for each field
 const fieldTimers = new Map();
