@@ -1,5 +1,8 @@
-import { FontLoader } from '/node_modules/three/loaders/FontLoader.js';
-import { TextGeometry } from '/node_modules/three/geometries/TextGeometry.js';
+import { FontLoader } from 'https://cdn.jsdelivr.net/npm/three@0.150.0/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from 'https://cdn.jsdelivr.net/npm/three@0.150.0/examples/jsm/geometries/TextGeometry.js';
+
+//import { FontLoader } from '/node_modules/three/src/loaders/FontLoader.js';
+//import { TextGeometry } from '/node_modules/three/src/geometries/TextGeometry.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const videoElement = document.getElementById('webcam');
