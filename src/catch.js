@@ -1,5 +1,5 @@
-import { FontLoader } from '/node_modules/three/src/loaders/FontLoader.js';
-import { TextGeometry } from '/node_modules/three/src/geometries/TextGeometry.js';
+import { FontLoader } from '/node_modules/three/loaders/FontLoader.js';
+import { TextGeometry } from '/node_modules/three/geometries/TextGeometry.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const videoElement = document.getElementById('webcam');
