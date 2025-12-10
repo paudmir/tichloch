@@ -1,3 +1,6 @@
+import { FontLoader } from '/node_modules/three/src/loaders/FontLoader.js';
+import { TextGeometry } from '/node_modules/three/src/geometries/TextGeometry.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const videoElement = document.getElementById('webcam');
     const canvasElement = document.getElementById('canvas');
@@ -169,35 +172,35 @@ document.addEventListener('DOMContentLoaded', () => {
         return sprite;
     }
 
-    function createTextgen(text){
-        const loader = new THREE.FontLoader();
-        loader.load('fonts/helvetiker_regular.typeface.json', function (font) {
-        const geometry = new THREE.TextGeometry('Hello Three.js!', {
+    async function createTextgen(text){
+        const loader = new FontLoader();
+        const font = await loader.loadAsync( '/src/assets/fonts/SpaceMono-Regular.json' );
+        const geometry = new TextGeometry( text, {
             font: font,
-            size: 3,
-            height: 0.2,
-            curveSegments: 12,
-            bevelEnabled: false,
-            bevelThickness: 0.5,
-            bevelSize: 0.3,
-            bevelOffset: 0,
-            bevelSegments: 5,
+            size: 0.8,
+            height: 1,
+            curveSegments: 12
+        } );
+
+        // Center the text geometry
+        geometry.computeBoundingBox();
+        const centerOffset = -0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
+
+        // Create material for the text
+        const textMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 1.0
         });
-    });
 
-    const material = new THREE.MeshFaceMaterial([
-        new THREE.MeshPhongMaterial({
-            color: 0xff22cc,
-            flatShading: true,
-        }), // front
-        new THREE.MeshPhongMaterial({
-            color: 0xffcc22
-        }), // side
-        ])
-        const mesh = new THREE.Mesh(geometry, material)
-        mesh.name = 'text';
-        scene.add(mesh);
+        // Create mesh from geometry and material
+        const textMesh = new THREE.Mesh(geometry, textMaterial);
+        textMesh.position.x = centerOffset;
 
+        // Add to sphere instead of scene
+        scene.add(textMesh);
+
+        return textMesh;
     }
     
     // Initialize Three.js
@@ -248,11 +251,12 @@ document.addEventListener('DOMContentLoaded', () => {
         sphere.add(wireframeMesh);
 
         // Create and add text sprite inside the sphere
-        textSprite = createTextSprite('Hello');
-        console.log('Added text');
-        scene.add(textSprite);
+        createTextgen("Helloooo!!");
+       // textSprite = createTextgen("Helloooo!!");//createTextSprite('Hello');
+        //console.log('Added text');
+        //scene.add(textSprite);
 
-        scene.add(sphere);
+        //scene.add(sphere);
 
         // Add some ambient light
         const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
