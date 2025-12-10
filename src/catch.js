@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function createTextgen(text){
         const loader = new FontLoader();
-        const font = await loader.loadAsync( '/src/assets/fonts/SpaceMono-Regular.json' );
+        const font = await loader.loadAsync( './assets/fonts/SpaceMono-Regular.json' );
         const geometry = new TextGeometry( text, {
             font: font,
             size: 0.8,
