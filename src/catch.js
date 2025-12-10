@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // CSV Parser function
     async function loadJobsFromCSV() {
         try {
-            const response = await fetch('/static/assets/jobs.csv');
+            const response = await fetch('/assets/jobs.csv');
             if (!response.ok) {
                 throw new Error(`Failed to load CSV: ${response.statusText}`);
             }
