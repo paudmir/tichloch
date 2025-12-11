@@ -189,7 +189,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to apply a filter
     function applyRedFilter() {
         // Set the CSS filter property directly
-        videoElement.style.filter = 'sepia(200%) saturate(200%)';//'sepia(100%)';
+        videoElement.style.filter = 'brightness(0.1) sepia(100%)';//'sepia(100%)';
+    }
+
+    //Function to apply bright filter
+    function applyBrightFilter() {
+        // Set the CSS filter property directly
+        videoElement.style.filter = 'brightness(5)';
     }
 
     // Function to remove all filters
@@ -410,6 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 applyRedFilter();
                             }else{
                                 // Successfully caught a good job!
+                                applyBrightFilter();
                                 showSuccessAndRedirect();
                             }
                             //And set flag Not steady
