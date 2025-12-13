@@ -359,8 +359,28 @@ function handleSubmitButtonClick(e) {
     alert('Mandatory fields are missing.\nPlease review your application and provide all the information requested.');
 
 };
+// Handle intro overlay
+function handleIntroOverlay() {
+    const introOverlay = document.getElementById('intro-overlay');
+
+    if (introOverlay) {
+        // After text fades in (3s) + display time (12s) = 15s total, start fade out
+        setTimeout(() => {
+            introOverlay.classList.add('fade-out');
+
+            // Remove overlay from DOM after fade out animation completes (2s)
+            setTimeout(() => {
+                introOverlay.remove();
+            }, 2000);
+        }, 15000); // 3s fade in + 12s display = 15s
+    }
+}
+
 // Attach save button listener when page loads
 window.addEventListener('DOMContentLoaded', () => {
+    // Handle intro overlay first
+    handleIntroOverlay();
+
     loadFormFields();
     loadCommentsFields();
 

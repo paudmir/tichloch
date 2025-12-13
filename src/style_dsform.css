@@ -236,3 +236,44 @@
                 font-size: 14px;
             }
         }
+
+        /* Intro overlay styles */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 1;
+            transition: opacity 2s ease-out;
+        }
+
+        .intro-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .intro-text {
+            max-width: 800px;
+            color: #fff;
+            text-align: center;
+            padding: 40px;
+            opacity: 0;
+            animation: fadeInText 3s ease-in forwards;
+        }
+
+        .intro-text p {
+            margin-bottom: 20px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeInText {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
