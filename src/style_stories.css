@@ -155,6 +155,16 @@
         .story-text.visible p:nth-child(8) { animation-delay: 22s; }
         .story-text.visible p:nth-child(9) { animation-delay: 25s; }
         .story-text.visible p:nth-child(10) { animation-delay: 28s; }
+        .story-text.visible p:nth-child(11) { animation-delay: 31s; }
+        .story-text.visible p:nth-child(12) { animation-delay: 34s; }
+        .story-text.visible p:nth-child(13) { animation-delay: 37s; }
+        .story-text.visible p:nth-child(14) { animation-delay: 40s; }
+        .story-text.visible p:nth-child(15) { animation-delay: 43s; }
+        .story-text.visible p:nth-child(16) { animation-delay: 46s; }
+        .story-text.visible p:nth-child(17) { animation-delay: 49s; }
+        .story-text.visible p:nth-child(18) { animation-delay: 52s; }
+        .story-text.visible p:nth-child(19) { animation-delay: 55s; }
+        .story-text.visible p:nth-child(20) { animation-delay: 58s; }
 
        .story-text p {
             color: #333;

@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Starting lightness: 96.3%, decrement by 4.9% for each subsequent paragraph
         const baseLightness = 96.3;
         const lightnessDecrement = 4.9;
-        const lightness = Math.max(71.6, baseLightness - (index * lightnessDecrement));
+        const lightness = Math.max(61.6, baseLightness - (index * lightnessDecrement));
 
         // Saturation also changes slightly
         const saturation = index === 0 ? 57.9 : 59.1 + (Math.min(index - 1, 1) * 0.3) + (Math.max(0, index - 2) * 0);
