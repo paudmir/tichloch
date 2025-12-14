@@ -117,17 +117,13 @@
             filter: blur(20px);
         }
 
-        .photo-card.active .photo {
-            /* Blur will be removed gradually via JavaScript */
-        }
-
         .story-text {
             padding: 30px;
             display: none;
             min-height: 100px;
             flex: 1;
             overflow-y: auto;
-
+            font-family: "Questrial", sans-serif;
         }
 
         .story-text.visible {
@@ -227,7 +223,7 @@
             background: rgba(255,255,255,0.2);
             color: white;
             border: 2px solid white;
-            border-radius: 20px;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -253,4 +249,39 @@
             font-optical-sizing: auto;
             font-style: normal;
             max-width:inherit;
+            opacity: 0;
+            animation: easeIn 1s ease-in forwards;
+        }
+
+        /* Stagger the animation for each paragraph */
+        div.people p:nth-child(1) { animation-delay: 0.2s; }
+        div.people p:nth-child(3) { animation-delay: 0.4s; }
+        div.people p:nth-child(5) { animation-delay: 0.6s; }
+        div.people p:nth-child(7) { animation-delay: 0.8s; }
+        div.people p:nth-child(9) { animation-delay: 1s; }
+        div.people p:nth-child(11) { animation-delay: 1.2s; }
+
+        @keyframes easeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .thanks-btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .thanks-btn:hover {
+            background: rgba(255,255,255,0.4);
         }

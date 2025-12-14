@@ -11,15 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentBlur = 80; // Starting blur value
     let startTime = 0; // Time when card was activated
 
-    // Function to calculate reading time based on text content (average reading speed: 200 words per minute)
-    function calculateReadingTime(textArray) {
-        const wordsPerMinute = 220;
-        const totalWords = textArray.reduce((sum, text) => {
-            return sum + text.split(/\s+/).filter(word => word.length > 0).length;
-        }, 0);
-        return (totalWords / wordsPerMinute) * 60; // Convert to seconds
-    }
-
     // Function to generate progressive HSL color for paragraphs
     function getParagraphColor(index) {
         // Starting lightness: 96.3%, decrement by 4.9% for each subsequent paragraph
@@ -100,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         storyText.classList.add('visible');
 
         // Calculate reading time for this story
-        const readingTime = calculateReadingTime(photos[index].txt);
+        const readingTime = 13;
 
         // Reset blur for new photo
         currentBlur = 20;
