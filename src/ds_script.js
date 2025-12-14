@@ -227,7 +227,7 @@ function createDefaultField() {
     fieldInnerWrapper.className = 'field-wrapper';
     fieldInnerWrapper.appendChild(label);
     fieldInnerWrapper.appendChild(input);
-    fieldInnerWrapper.appendChild(timerInfo);
+    //fieldInnerWrapper.appendChild(timerInfo);
     fieldInnerWrapper.appendChild(warningText);
 
     fieldWrapper.appendChild(fieldInnerWrapper);
@@ -311,13 +311,6 @@ function clearFieldTimers(fieldId) {
     }
 }
 
-// Handle form submission
-document.getElementById('ds160-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const formData = new FormData(document.getElementById('ds160-form'));
-    console.log('Form submitted with data:', Object.fromEntries(formData));
-    alert('Form submitted! Check console for data.');
-});
 
 // Handle save button click - stops deletion of all fields
 function handleSaveButtonClick(e) {
@@ -350,15 +343,6 @@ function handleSaveButtonClick(e) {
     alert('Your data has been saved.');
 }
 
-function handleSubmitButtonClick(e) {
-    // Prevent default form behavior if needed
-    if (e) {
-        e.preventDefault();
-    }
-
-    alert('Mandatory fields are missing.\nPlease review your application and provide all the information requested.');
-
-};
 // Handle intro overlay
 function handleIntroOverlay() {
     const introOverlay = document.getElementById('intro-overlay');
@@ -391,12 +375,9 @@ window.addEventListener('DOMContentLoaded', () => {
     startSessionTimeout();
 
     const saveBtn = document.querySelector('.save-btn');
-    const submitBtn = document.querySelector('.submit-btn');
 
     if (saveBtn) {
         saveBtn.addEventListener('click', handleSaveButtonClick);
     }
-    if (submitBtn) {
-        submitBtn.addEventListener('click', handleSubmitButtonClick);
-    }
+
 });
