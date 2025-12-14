@@ -227,7 +227,7 @@
         }
 
          div.people{
-            background-image: url('./assets/images/paperroot.png');
+            background-image: url('assets/images/paperroot.png');
             background-size:contain; 
             background-position: center;
             align-content: center; 
