@@ -109,10 +109,10 @@ function showSessionTimeoutOverlay() {
 
     container.appendChild(overlay);
 
-    // Reload page after 3 seconds
+    // Reload page after 6 seconds
     setTimeout(() => {
         window.location.reload();
-    }, 3000);
+    }, 6000);
 }
 
 // Save form data to localStorage
