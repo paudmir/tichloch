@@ -149,7 +149,7 @@
         #comments-overlay-container {
             position: fixed;
             top: 50%;
-            left: 50%;
+            right: 5%;
             transform: translate(-50%, -50%);
             z-index: 1000;
             pointer-events: none;
@@ -168,6 +168,7 @@
             line-height: 1.6;
             animation: easeInOut 8s ease-in-out;
             pointer-events: auto;
+            font-style: italic;
         }
 
         .session-timeout-overlay {
