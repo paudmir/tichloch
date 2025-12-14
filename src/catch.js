@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Wait 5 seconds, then redirect to ds160.html
         setTimeout(() => {
-            window.location.href = 'ds160.html';
+            window.location.href = 'stories.html';
         }, 5000);
     }
 
