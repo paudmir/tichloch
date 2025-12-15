@@ -5,7 +5,29 @@ import { TextGeometry } from 'https://cdn.jsdelivr.net/npm/three@0.150.0/example
 //import { FontLoader } from '/node_modules/three/src/loaders/FontLoader.js';
 //import { TextGeometry } from '/node_modules/three/src/geometries/TextGeometry.js';
 
+
+// Handle intro overlay
+function handleIntroOverlay() {
+    const introOverlay = document.getElementById('intro-overlay');
+
+    if (introOverlay) {
+        // After text fades in (3s) + display time (12s) = 15s total, start fade out
+        setTimeout(() => {
+            introOverlay.classList.add('fade-out');
+
+            // Remove overlay from DOM after fade out animation completes (2s)
+            setTimeout(() => {
+                introOverlay.remove();
+            }, 2000);
+        }, 15000); // 3s fade in + 12s display = 15s
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Handle intro overlay first
+    handleIntroOverlay();
+
     const videoElement = document.getElementById('webcam');
     const canvasElement = document.getElementById('canvas');
     const canvasCtx = canvasElement.getContext('2d');
