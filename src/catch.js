@@ -149,10 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function createTextgen(text){
         const loader = new FontLoader();
-        const font = await loader.loadAsync( './assets/fonts/SpaceMono-Regular.json' );
+        const font = await loader.loadAsync( './assets/fonts/Space_Mono_Regular_new.json' );
 
         // Replace spaces with underscores or handle them
-        const displayText = text.replace(/ /g, '_');
+        //const displayText = text.replace(/ /g, '_');
+        const displayText = text.replace(/\u00A0/g, " ");
 
         const geometry = new TextGeometry( displayText, {
             font: font,
@@ -469,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } else {
-            statusElement.textContent = 'No hands detected';
+            statusElement.textContent = 'Try catching a job';
         }
     }
     
