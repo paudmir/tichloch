@@ -99,20 +99,19 @@ function showSessionTimeoutOverlay() {
     // Save current form data before timeout
     saveFormDataToLocalStorage();
 
-    // Create and display the timeout overlay
-    const container = document.getElementById('comments-overlay-container');
-    container.innerHTML = '';
+    // Scroll to the bottom of the page
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+    });
 
+    // Create and display the timeout overlay directly on the body (not in the container)
     const overlay = document.createElement('div');
     overlay.className = 'comment-overlay session-timeout-overlay';
     overlay.textContent = 'Session timed out';
 
-    container.appendChild(overlay);
+    document.body.appendChild(overlay);
 
-    // Reload page after 6 seconds
-    setTimeout(() => {
-        window.location.reload();
-    }, 6000);
 }
 
 // Save form data to localStorage
