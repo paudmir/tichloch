@@ -49,8 +49,10 @@ function startCommentDisplay() {
         return;
     }
 
-    // Display first comment immediately, then every 10 seconds
-    displayNextComment();
+    // Display first comment after 25 seconds, then every 10 seconds
+    setTimeout(() => {
+        displayNextComment();
+    }, 25000);
     
     commentDisplayInterval = setInterval(() => {
         displayNextComment();
