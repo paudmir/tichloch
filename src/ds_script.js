@@ -100,10 +100,12 @@ function showSessionTimeoutOverlay() {
     saveFormDataToLocalStorage();
 
     // Scroll to the bottom of the page
-    window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: 'smooth'
-    });
+    //window.scrollTo({
+    //    top: document.body.scrollHeight,
+    //    behavior: 'instant'
+    //});
+
+    document.getElementById("lastinst").scrollIntoView();
 
     // Create and display the timeout overlay directly on the body (not in the container)
     const overlay = document.createElement('div');
@@ -355,7 +357,7 @@ function handleIntroOverlay() {
             setTimeout(() => {
                 introOverlay.remove();
             }, 2000);
-        }, 15000); // 3s fade in + 12s display = 15s
+        }, 25000); // 3s fade in + 12s display = 15s
     }
 }
 

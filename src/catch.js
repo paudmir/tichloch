@@ -19,7 +19,7 @@ function handleIntroOverlay() {
             setTimeout(() => {
                 introOverlay.remove();
             }, 2000);
-        }, 15000); // 3s fade in + 12s display = 15s
+        }, 25000); // 3s fade in + 12s display = 15s
     }
 }
 
