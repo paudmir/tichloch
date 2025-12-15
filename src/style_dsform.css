@@ -168,6 +168,7 @@
             animation: easeInOut 8s ease-in-out;
             pointer-events: auto;
             font-style: italic;
+            font-family: "Questrial", sans-serif;
         }
 
         .session-timeout-overlay {
